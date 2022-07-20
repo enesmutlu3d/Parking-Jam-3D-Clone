@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1427769302426243316}
   - component: {fileID: 1504909347}
+  - component: {fileID: 9109500984971140439}
+  - component: {fileID: 6863345733549761022}
   m_Layer: 0
   m_Name: Car_2x2
   m_TagString: Untagged
@@ -41,12 +43,36 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1427769302426243317}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4045587237947260766, guid: efce898dd58e2714f896066d902ed7f3, type: 3}
+--- !u!114 &9109500984971140439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1427769302426243317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be8c130d38e99f848985f45bfaa05866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6863345733549761022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1427769302426243317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a0865b650330da4d966c284a1b49a48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8963402307622221739
 PrefabInstance:
   m_ObjectHideFlags: 0

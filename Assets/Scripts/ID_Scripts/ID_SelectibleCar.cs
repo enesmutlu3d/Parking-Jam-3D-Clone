@@ -2,6 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Empty_Grid : MonoBehaviour
+public class ID_SelectibleCar : MonoBehaviour
 {
 }
