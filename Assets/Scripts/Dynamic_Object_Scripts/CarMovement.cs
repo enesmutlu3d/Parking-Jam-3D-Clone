@@ -31,12 +31,14 @@ public class CarMovement : MonoBehaviour
     {
         CheckGap(rayPosForward);
         transform.position = transform.position + transform.forward * 2f * gapHits.Count;
+        GridReEnable();
     }
 
     private void MoveBackward()
     {
         CheckGap(rayPosBackward);
         transform.position = transform.position + transform.forward * -2f * gapHits.Count;
+        GridReEnable();
     }
 
     private void CheckGap(Transform rayPos)
@@ -55,6 +57,15 @@ public class CarMovement : MonoBehaviour
             {
                 return;
             }
+        }
+    }
+
+    private void GridReEnable()
+    {
+        for (int i = 0; i < gapHits.Count;)
+        {
+            gapHits[i].GetComponent<BoxCollider>().enabled = true;
+            gapHits.Remove(gapHits[i]);
         }
     }
 
