@@ -8,6 +8,7 @@ public class CarMovement : MonoBehaviour
     [SerializeField] private Transform rayPosBackward;
 
     private bool isCarPlacedVertical = true;
+    private bool doExit = false;
     private List<Transform> gapHits;
 
     private void Awake()
@@ -29,19 +30,32 @@ public class CarMovement : MonoBehaviour
 
     private void MoveForward()
     {
-        CheckGap(rayPosForward);
+        CheckEmpty(rayPosForward);
+        CheckExit(rayPosForward);
         transform.position = transform.position + transform.forward * 2f * gapHits.Count;
+        if (doExit)
+        {
+            ForwardExit();
+        }
         GridReEnable();
     }
 
     private void MoveBackward()
     {
-        CheckGap(rayPosBackward);
-        transform.position = transform.position + transform.forward * -2f * gapHits.Count;
+        CheckEmpty(rayPosBackward);
+        CheckExit(rayPosBackward);
+        if (doExit)
+        {
+            transform.position = transform.position + transform.forward * -2f * (gapHits.Count + 1);
+        }
+        else
+        {
+            transform.position = transform.position + transform.forward * -2f * gapHits.Count;
+        }
         GridReEnable();
     }
 
-    private void CheckGap(Transform rayPos)
+    private void CheckEmpty(Transform rayPos)
     {
         RaycastHit hit;
 
@@ -51,13 +65,36 @@ public class CarMovement : MonoBehaviour
             {
                 gapHits.Add(hit.transform);
                 hit.transform.GetComponent<BoxCollider>().enabled = false;
-                CheckGap(rayPos);
+                CheckEmpty(rayPos);
             }
             else
             {
                 return;
             }
         }
+    }
+
+    private void CheckExit(Transform rayPos)
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(rayPos.transform.position, rayPos.transform.forward, out hit, 100.0f))
+        {
+            if (hit.transform.TryGetComponent(out ID_ExitWay exitWay))
+            {
+                doExit = true;
+            }
+        }
+    }
+
+    private void ForwardExit()
+    {
+
+    }
+
+    private void BackwardExit()
+    {
+
     }
 
     private void GridReEnable()
@@ -67,6 +104,7 @@ public class CarMovement : MonoBehaviour
             gapHits[i].GetComponent<BoxCollider>().enabled = true;
             gapHits.Remove(gapHits[i]);
         }
+        doExit = false;
     }
 
 }
