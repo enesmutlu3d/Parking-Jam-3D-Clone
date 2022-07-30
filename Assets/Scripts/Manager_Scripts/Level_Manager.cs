@@ -5,6 +5,7 @@ using UnityEngine;
 public class Level_Manager : MonoBehaviour
 {
     [SerializeField] private GameObject CarsParent;
+    [SerializeField] private Animator levelEndAnimation;
     [HideInInspector] public List<GameObject> CarList;
 
     private void Awake()
@@ -24,6 +25,6 @@ public class Level_Manager : MonoBehaviour
 
     public void LevelCompleted()
     {
-
+        levelEndAnimation.SetTrigger("LevelEndTrigger");
     }
 }
