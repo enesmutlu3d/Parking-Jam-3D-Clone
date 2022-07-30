@@ -139,6 +139,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rayPosForward: {fileID: 1075709039}
   rayPosBackward: {fileID: 1821238960}
+  _meshCollider: {fileID: 1504909347}
+  Speed: 6
 --- !u!1001 &8963402307622221739
 PrefabInstance:
   m_ObjectHideFlags: 0

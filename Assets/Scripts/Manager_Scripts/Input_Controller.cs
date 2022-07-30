@@ -67,6 +67,7 @@ public class Input_Controller : MonoBehaviour
     {
         if (selectedCar != null)
             selectedCar.GetComponent<CarMovement>().MoveCar(isVertical, isPositive);
+        selectedCar = null;
     }
 
 }

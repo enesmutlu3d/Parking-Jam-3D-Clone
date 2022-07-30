@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6597403000248937883}
   - component: {fileID: 3789175046262800368}
-  - component: {fileID: 8577495761024900976}
+  - component: {fileID: 7515757733989042488}
   m_Layer: 0
   m_Name: 2x2_Road_Corner
   m_TagString: Untagged
@@ -47,7 +47,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &8577495761024900976
+--- !u!114 &7515757733989042488
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -56,7 +56,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6597403000248937880}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5017c457bbd51d14db28bfd0542cd17a, type: 3}
+  m_Script: {fileID: 11500000, guid: 1117bd0bfcad8204b9433cf0a1d28c55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &2012658893333776861
@@ -88,7 +88,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4562506054342500952, guid: ad1309f506ba20c4fb4a6ebb1bada544, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: -0.00000032782552
       objectReference: {fileID: 0}
     - target: {fileID: 4562506054342500952, guid: ad1309f506ba20c4fb4a6ebb1bada544, type: 3}
       propertyPath: m_LocalRotation.x
@@ -96,7 +96,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4562506054342500952, guid: ad1309f506ba20c4fb4a6ebb1bada544, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 4562506054342500952, guid: ad1309f506ba20c4fb4a6ebb1bada544, type: 3}
       propertyPath: m_LocalRotation.z

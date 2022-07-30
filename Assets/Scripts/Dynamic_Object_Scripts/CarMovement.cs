@@ -1,15 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class CarMovement : MonoBehaviour
 {
     [SerializeField] private Transform rayPosForward;
     [SerializeField] private Transform rayPosBackward;
+    [SerializeField] private MeshCollider _meshCollider;
+    [SerializeField] private float Speed;
+    [SerializeField] private Level_Manager _levelManager;
 
     private bool isCarPlacedVertical = true;
-    private bool doExit = false;
     private List<Transform> gapHits;
+    private Transform rayPos;
+    private float gapSize;
+    private int carCount;
 
     private void Awake()
     {
@@ -22,34 +28,25 @@ public class CarMovement : MonoBehaviour
     {
         if (isVertical != isCarPlacedVertical)
             return;
+
+        VarSet(isPositive);
+
+        CheckEmpty(rayPos);
+        GridReEnable();
+    }
+
+    private void VarSet (bool isPositive)
+    {
         if (isPositive)
-            MoveForward();
+        {
+            rayPos = rayPosForward;
+            gapSize = 2f;
+        }
         else
-            MoveBackward();
-    }
-
-    private void MoveForward()
-    {
-        CheckEmpty(rayPosForward);
-        CheckExit(rayPosForward);
-        transform.position = transform.position + transform.forward * 2f * gapHits.Count;
-        if (doExit)
         {
-            ForwardExit();
+            rayPos = rayPosBackward;
+            gapSize = -2f;
         }
-        GridReEnable();
-    }
-
-    private void MoveBackward()
-    {
-        CheckEmpty(rayPosBackward);
-        CheckExit(rayPosBackward);
-        transform.position = transform.position + transform.forward * -2f * gapHits.Count;
-        if (doExit)
-        {
-            BackwardExit();
-        }
-        GridReEnable();
     }
 
     private void CheckEmpty(Transform rayPos)
@@ -64,34 +61,42 @@ public class CarMovement : MonoBehaviour
                 hit.transform.GetComponent<BoxCollider>().enabled = false;
                 CheckEmpty(rayPos);
             }
+            else if (hit.transform.TryGetComponent(out ID_ExitWay exitway))
+            {
+                _meshCollider.enabled = false;
+                transform.DOMove(transform.position + transform.forward * gapSize * gapHits.Count, gapHits.Count * (1 / Speed) * 1.5f)
+                    .OnComplete(() => DoExit(rayPos));
+            }
             else
             {
+                transform.DOMove(transform.position + transform.forward * gapSize * gapHits.Count, gapHits.Count * (1 / Speed) * 1.5f);
                 return;
             }
         }
     }
 
-    private void CheckExit(Transform rayPos)
+    private void DoExit(Transform rayPos)
     {
         RaycastHit hit;
 
         if (Physics.Raycast(rayPos.transform.position, rayPos.transform.forward, out hit, 100.0f))
         {
-            if (hit.transform.TryGetComponent(out ID_ExitWay exitWay))
+            if (hit.transform.TryGetComponent(out ID_ExitWay exitway))
             {
-                doExit = true;
+                transform.DOMove(hit.transform.position + (hit.transform.forward * -1), (1 / Speed)).SetEase(Ease.Linear);
+                transform.DORotate(hit.transform.rotation.eulerAngles, (1 / Speed)).SetEase(Ease.Linear)
+                    .OnComplete(() => DoExit(rayPos));
             }
         }
-    }
-
-    private void ForwardExit()
-    {
-
-    }
-
-    private void BackwardExit()
-    {
-
+        else
+        {
+            transform.DOMove(transform.position + transform.forward * 50f, (1 / Speed) * 50f);
+            _levelManager.CarList.RemoveAt(_levelManager.CarList.Count - 1);
+            if (_levelManager.CarList.Count == 0)
+            {
+                _levelManager.LevelCompleted();
+            }
+        }
     }
 
     private void GridReEnable()
@@ -101,7 +106,6 @@ public class CarMovement : MonoBehaviour
             gapHits[i].GetComponent<BoxCollider>().enabled = true;
             gapHits.Remove(gapHits[i]);
         }
-        doExit = false;
     }
 
 }
