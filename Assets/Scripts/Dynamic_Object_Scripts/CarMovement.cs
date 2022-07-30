@@ -44,13 +44,10 @@ public class CarMovement : MonoBehaviour
     {
         CheckEmpty(rayPosBackward);
         CheckExit(rayPosBackward);
+        transform.position = transform.position + transform.forward * -2f * gapHits.Count;
         if (doExit)
         {
-            transform.position = transform.position + transform.forward * -2f * (gapHits.Count + 1);
-        }
-        else
-        {
-            transform.position = transform.position + transform.forward * -2f * gapHits.Count;
+            BackwardExit();
         }
         GridReEnable();
     }
