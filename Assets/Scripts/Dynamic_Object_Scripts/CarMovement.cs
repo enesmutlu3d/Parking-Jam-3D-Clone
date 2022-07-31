@@ -12,16 +12,18 @@ public class CarMovement : MonoBehaviour
     [SerializeField] private Level_Manager _levelManager;
 
     private bool isCarPlacedVertical = true;
+    private bool isCarReverse;
     private List<Transform> gapHits;
     private Transform rayPos;
     private float gapSize;
-    private int carCount;
 
     private void Awake()
     {
         gapHits = new List<Transform>();
         if (transform.forward == Vector3.right || transform.forward == Vector3.left)
             isCarPlacedVertical = false;
+        if (transform.forward == Vector3.back || transform.forward == Vector3.left)
+            isCarReverse = true;
     }
 
     public void MoveCar (bool isVertical, bool isPositive)
@@ -37,12 +39,22 @@ public class CarMovement : MonoBehaviour
 
     private void VarSet (bool isPositive)
     {
-        if (isPositive)
+        if (isPositive == true && isCarReverse == false)
         {
             rayPos = rayPosForward;
             gapSize = 2f;
         }
-        else
+        else if (isPositive == true && isCarReverse == true)
+        {
+            rayPos = rayPosBackward;
+            gapSize = -2f;
+        }
+        else if (isPositive == false && isCarReverse == true)
+        {
+            rayPos = rayPosForward;
+            gapSize = 2f;
+        }
+        else if (isPositive == false && isCarReverse == false)
         {
             rayPos = rayPosBackward;
             gapSize = -2f;
@@ -65,7 +77,7 @@ public class CarMovement : MonoBehaviour
             {
                 _meshCollider.enabled = false;
                 transform.DOMove(transform.position + transform.forward * gapSize * gapHits.Count, gapHits.Count * (1 / Speed) * 1.5f)
-                    .OnComplete(() => DoExit(rayPos));
+                    .OnComplete(() => GetInToRoad(hit));
             }
             else
             {
@@ -75,17 +87,25 @@ public class CarMovement : MonoBehaviour
         }
     }
 
-    private void DoExit(Transform rayPos)
+    private void GetInToRoad(RaycastHit hit)
     {
+        Debug.Log("func1");
+        transform.DOMove(hit.transform.position + (hit.transform.forward * -1), (1 / Speed)).SetEase(Ease.Linear);
+        transform.DORotate(hit.transform.rotation.eulerAngles, (1 / Speed)).SetEase(Ease.Linear).OnComplete(DoExit);
+    }
+
+    private void DoExit()
+    {
+        Debug.Log("func2");
         RaycastHit hit;
 
-        if (Physics.Raycast(rayPos.transform.position, rayPos.transform.forward, out hit, 100.0f))
+        if (Physics.Raycast(rayPosForward.transform.position, rayPosForward.transform.forward, out hit, 100.0f))
         {
             if (hit.transform.TryGetComponent(out ID_ExitWay exitway))
             {
                 transform.DOMove(hit.transform.position + (hit.transform.forward * -1), (1 / Speed)).SetEase(Ease.Linear);
                 transform.DORotate(hit.transform.rotation.eulerAngles, (1 / Speed)).SetEase(Ease.Linear)
-                    .OnComplete(() => DoExit(rayPos));
+                    .OnComplete(() => DoExit());
             }
         }
         else
